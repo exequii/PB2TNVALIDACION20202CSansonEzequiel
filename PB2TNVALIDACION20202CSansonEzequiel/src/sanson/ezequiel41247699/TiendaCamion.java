@@ -56,7 +56,7 @@ public class TiendaCamion  implements ITienda{
 
 	@Override
 	public void vender(Integer idProducto) throws CajaCerradaException, ProductoInexsistenteException{
-		
+		Boolean seVendio=false;
 		if(!estadoDeCaja)
 			throw new CajaCerradaException("Caja Cerrada");
 		
@@ -66,10 +66,11 @@ public class TiendaCamion  implements ITienda{
 			if(producto.getId().equals(idProducto)) {
 				productoABuscar = producto;
 				this.ventas.add(productoABuscar);
+				seVendio=true;
 			}
 		}
 		}
-		
+		if(!seVendio)
 		throw new ProductoInexsistenteException("Producto no encontrado");
 		
 	}
@@ -80,9 +81,17 @@ public class TiendaCamion  implements ITienda{
 	@Override
 	public Reporte cierreZ() {
 			this.estadoDeCaja=false;
+			
+			Reporte reporteDiario = new Reporte();
+			Double totalVentas = 0.0;
+			for(Producto producto : ventas) {
+				totalVentas += producto.getPrecio();
+			}
+			reporteDiario.setTotalVentas(totalVentas);
+			reporteDiario.setTotalIva(totalVentas*0.21);
+			reporteDiario.setTotalNeto(totalVentas+(totalVentas*0.21));
 		
-		
-		return null;
+		return reporteDiario;
 	}
 
 
