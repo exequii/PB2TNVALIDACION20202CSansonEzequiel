@@ -1,2 +1,2 @@
 # PB2TNVALIDACION20202CSansonEzequiel
-EDA 3 Recuperatorio
+EDA 3
